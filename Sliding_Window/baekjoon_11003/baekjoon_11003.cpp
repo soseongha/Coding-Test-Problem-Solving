@@ -1,12 +1,8 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
+#include <deque>
 using namespace std;
+typedef pair<int,int> Node;//value와 index를 담는 노드
 
-vector<int> sub;
-vector<int> sub_index;
-void add(int, int);
-void pop(int, int);
 
 int main(void){
 
@@ -19,60 +15,32 @@ int main(void){
     int N, L;
     cin >> N >> L;
 
-    //N개의 수 A들
-    vector<int> A(N,0);
+    //N개의 노드를 덱으로 관리
+    deque<Node> mydeque;
     for(int i = 0; i < N; i++){
-        cin >> A[i];
-    }
-
-    for(int i = 0; i < L; i++){//처음에는 범위만큼 add만 함
-        add(A[i], i);
-        cout << sub[0] << " ";
         
-    }
+        //새 노드 생성
+        int value;
+        cin >> value;
+        Node newNode = {value, i};
 
-    for(int i = L; i < N; i++){//그 다음에는 하나 add, 하나 pop
-        add(A[i], i);
-        pop(A[i-L], i-L);
-        cout << sub[0] << " ";
-        
-    }
-    
-}
-
-
-//한 요소를 넣으면 서브배열에 요소를 넣어서 정렬하는 함수
-void add(int value, int index){
-
-    sub.insert(sub.begin(), value);//새 요소를 맨 앞에 insert
-    sub_index.insert(sub_index.begin(), index);
-        
-    for(int i = 0; i < sub.size() - 1; i++){
-        if(sub[i] > sub[i+1]){//하나씩 비교하다가 앞에거가 크면 swap
-            
-            int temp = sub[i];
-            sub[i] = sub[i+1];
-            sub[i+1] = temp;
-            
-            temp = sub_index[i];
-            sub_index[i] = sub_index[i+1];
-            sub_index[i+1] = temp; 
+        //맨 뒤 노드가 새 노드보다 크면 계속 pop
+        while(mydeque.size() > 0 && mydeque.back().first > newNode.first){
+            mydeque.pop_back();
         }
+        
+        //뒤에서 뺄 거 다 빼고 난 뒤에 새 노드 push
+        
+        mydeque.push_back(newNode);
+        
+        //맨 앞에서 범위 벗어나는 노드 pop
+        if(mydeque.back().second - mydeque.front().second >= L){
+            mydeque.pop_front();
+        }
+
+        //맨 앞 노드 = 최솟값 프린트
+        cout << mydeque.front().first << " ";
+
     }
 
-    return;
-}
-
-//한 요소를 빼면 서브배열에 요소를 빼는 함수
-void pop(int value, int index){
-
-    for(int i = 0; i < sub.size(); i++){//sub_index 배열에서 index 값과 값이 일치하는 것을 찾아서
-        if(sub_index[i] == index){ //그 값을 pop함
-            sub.erase(sub.begin() + i);
-            sub_index.erase(sub_index.begin() + i);
-        }    
-
-    }
-
-    return;
 }
