@@ -40,5 +40,14 @@
 |스택으로 수열 만들기|baekjoon|1874|
 |오큰수 구하기|baekjoon|17298|
 |카드게임|baekjoon|2164|
+|절댓값 힙|baekjoon|11286|
+
+* <b>Bubble and Selection Sort</b><br>
+
+|title|site|#|
+|:------|:---|:---|
+|버블소트|baekjoon|1377|
+|소트인사이트|baekjoon|1427|
+|수 정렬하기|baekjoon|2750|
 
 <br><br>
