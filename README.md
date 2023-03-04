@@ -42,12 +42,15 @@
 |카드게임|baekjoon|2164|
 |절댓값 힙|baekjoon|11286|
 
-* <b>Bubble and Selection Sort</b><br>
+* <b>Sort</b><br>
 
 |title|site|#|
 |:------|:---|:---|
 |버블소트|baekjoon|1377|
 |소트인사이트|baekjoon|1427|
 |수 정렬하기|baekjoon|2750|
+|ATM 인출 시간 계산하기|baekjoon|11399|
+|K번째수구하기|baekjoon|11004|
+|수 정렬하기2|baekjoon|2751|
 
 <br><br>
