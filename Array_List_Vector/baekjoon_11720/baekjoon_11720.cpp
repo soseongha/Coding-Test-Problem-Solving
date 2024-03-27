@@ -1,22 +1,23 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 int main(void)
 {
-    int N = 0;
+    int N;
     cin >> N;
-
+    
     string numbers;
     cin >> numbers;
 
     int total = 0;
 
-    for(int i = 0; i < N; i++)
-    { 
+    for(int i = 0; i < N; i++){
+        
         total += numbers[i] - '0';
+        
     }
-
-    cout << total <<"\n";
+    cout << total << "\n";
 
 }

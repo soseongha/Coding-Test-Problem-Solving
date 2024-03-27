@@ -3,35 +3,26 @@ using namespace std;
 
 int main(void){
 
-    //N 읽고 저장하기   
-    int N = 0;
+    //N 정의하고 읽기
+    int N;
     cin >> N;
 
-    //N번의 int형 점수 읽고 배열에 저장하기
-    int subjects[1000]; //평균은 double일 수 있지만, 점수는 int라고 명시됨!!
-    int temp = 0;
-    for(int i = 0; i < N; i++){
-        cin >> temp;
-        subjects[i] = temp; 
-    }
-
-    //배열에서 가장 큰 수 찾기(O(n))
+    //성적들 돌면서 하나씩 읽기, 최댓값 업데이트 실시간으로, sum이 충분히 작으므로 sum 미리 구하기
+    float subjects[N];
     int max = 0;
+    int swap;
+    double sum = 0;
+    
     for(int i = 0; i < N; i++){
-        if(subjects[i] > max){
-            max = subjects[i];
-        } 
-    }
 
-    //모든 과목의 점수 다시 계산하기(O(n)) + 평균내기
-    long sum = 0;
-    double average = 0;
-    for(int i = 0; i < N; i++){
+        cin >> subjects[i];
+        if(subjects[i] > max) max = subjects[i];
         sum += subjects[i];
     }
-    average = sum * 100.0 / max/ N; // 100 대신 100.0을 씀으로써 이 계산식을 double로 암시적 형변환
+    
+    //새로운 평균 계산하기
+    cout << sum / max * 100 / N << "\n";
 
-    //출력
-    cout << average << "\n";
+    return 0;
 
 }
