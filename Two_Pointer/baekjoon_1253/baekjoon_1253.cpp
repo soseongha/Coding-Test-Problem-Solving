@@ -5,51 +5,47 @@ using namespace std;
 
 int main(void)
 {
-    //1부터 2000까지의 정수 N 받고, int형 N개의 정수를 다음 줄에 받음
+    //N과 N개의 수 입력 받기
     int N;
     cin >> N;
-    vector<int> nums(N,0);
+    int A[N];
     for(int i = 0; i < N; i++){
-
-        cin >> nums[i];
+        cin >> A[i];
     }
 
-    //오름차순으로 정렬
-    sort(nums.begin(), nums.end());
+    //정렬하기
+    sort(A, A+N);
 
-    //좋은 수 = 다른 두 수의 합인 수
+    //가장 큰 수부터 보자
+    //투 포인터로 양끝에서 가면서 찾자
     int count = 0;
-    int val = 0;
-    for(int k = 0; k < N; k++){
+    for(int i = 2; i < N; i++){
 
-        int i = 0;
-        int j = N-1;
-
-        while(i < j){ 
-
-            if(nums[i] + nums[j] == nums[k]){
-                if(i != k && j != k){
-                    count++;
-                    break;
-                }//만약 i, j가 k랑 겹치면 걔는 제외얌
-                else if(i == k){
-                    i++;//i랑 겹쳤으면 안겹치게 i를 조정해 
-                }
-                else if(j == k){
-                    j--;//j랑 겹쳤으면 안겹치게 j를 조정해  
-                }
+        int start = 0;
+        int end = i-1;
+        long target = A[i];
+        
+        while(start < end){
+            
+            if(A[start] + A[end] > target){
+                
+                end--;
             }
-            else if(nums[i] + nums[j] < nums[k]){
-                i++;
+            else if(A[start] + A[end] < target){
+
+                start++;
+
             }
             else{
-                j--;
+
+                count++;
+                break;//찾으면 즉시 끝내고 다음 수를 보자
+
             }
         }
     }
 
-
-    //출력
-    cout<<count<<"\n";
+    //출력하기
+    cout << count << "\n";
 
 }
