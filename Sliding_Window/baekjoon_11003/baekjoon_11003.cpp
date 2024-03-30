@@ -1,46 +1,44 @@
 #include <iostream>
 #include <deque>
+#include <vector>
 using namespace std;
-typedef pair<int,int> Node;//value와 index를 담는 노드
 
+typedef pair<int, int> Number;
 
 int main(void){
 
-    //시간단축용
-    ios::sync_with_stdio(false);
-    std::cin.tie(NULL);
-    std::cout.tie(NULL);
-    
-    //N개의 수, 범위 L
+    //시간절약용
+    ios::sync_with_stdio(false); //이거 false 없으면 적용이 안됑 
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    //N, L, 수 배열 입력받기
     int N, L;
     cin >> N >> L;
 
-    //N개의 노드를 덱으로 관리
-    deque<Node> mydeque;
+    //덱 선언하기
+    deque<Number> window;
+
+    //슬라이딩 윈도우 알고리즘으로 구현
     for(int i = 0; i < N; i++){
-        
-        //새 노드 생성
-        int value;
-        cin >> value;
-        Node newNode = {value, i};
 
-        //맨 뒤 노드가 새 노드보다 크면 계속 pop
-        while(mydeque.size() > 0 && mydeque.back().first > newNode.first){
-            mydeque.pop_back();
-        }
-        
-        //뒤에서 뺄 거 다 빼고 난 뒤에 새 노드 push
-        
-        mydeque.push_back(newNode);
-        
-        //맨 앞에서 범위 벗어나는 노드 pop
-        if(mydeque.back().second - mydeque.front().second >= L){
-            mydeque.pop_front();
+        //입력도 즉석으로 받기
+        int A;
+        cin >> A;
+
+        //비교해서 큰 것은 빼기
+        while(window.size() && window.back().second > A){
+            window.pop_back();
         }
 
-        //맨 앞 노드 = 최솟값 프린트
-        cout << mydeque.front().first << " ";
+        //덱에 현재 요소 삽입
+        window.push_back(Number{i, A});
+        
+        //윈도우 범위 아닌 것 빼기
+        if(window.front().first < i-L+1) window.pop_front();
 
+        //현재의 최솟값 출력
+        cout << window.front().second << " ";
     }
 
 }

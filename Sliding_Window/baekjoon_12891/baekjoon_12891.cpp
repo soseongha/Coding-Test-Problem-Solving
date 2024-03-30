@@ -4,74 +4,50 @@ using namespace std;
 
 int main(void){
 
-    //문자열의 길이 S, 부분문자열의 길이 P, 전체 DNA 문자열 fullDNA
+    //시간절약용
+    ios::sync_with_stdio();
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    //전체 문자열의 길이 S, 부분 문자열의 길이 P, 문자열 fullDNA, 각 염기의 수 입력 받기
     int S, P;
-    cin >> S >> P;
     string fullDNA;
-    string subDNA;
+    int A, C, G, T;
+
+    cin >> S >> P;
     cin >> fullDNA;
+    cin >> A >> C >> G >> T;
     
-    //각 문자의 개수 A,C,G,T
-    int A,C,G,T;
-    cin >> A;
-    cin >> C;
-    cin >> G;
-    cin >> T;
-
-    //문자열 str 내에서 P개씩 잘라서 이동하되, 그게 문자 개수 조건 맞는지 확인하기
+    //초반 부분문자열 P를 세기
+    int partDNA[4] = {0, 0, 0, 0}; //A, C, G, T
     int count = 0;
-    int sA=0,sC=0,sG=0,sT=0;//subDNA 속 문자의 개수
-
-    for(int i = 0; i < S-P+1; i++){
+    for(int i = 0; i < P; i++){
         
-        //부분문자열에서 문자 개수를 카운팅
-        if(i == 0){//첫번째 슬라이딩 때는 부분문자열에서 수동으로 문자 개수를 셈
-            subDNA = fullDNA.substr(i,P);//index i부터 P개의 문자까지의 문자열 반환
+        if(fullDNA[i] == 'A') partDNA[0]++;
+        else if(fullDNA[i] == 'C') partDNA[1]++;
+        else if(fullDNA[i] == 'G') partDNA[2]++;
+        else if(fullDNA[i] == 'T') partDNA[3]++;
+    }
+    if(partDNA[0] >= A && partDNA[1] >= C && partDNA[2] >= G && partDNA[3] >= T) count++;
 
-            for(int j = 0; j < P; j++){
-                if(subDNA[j] == 'A'){
-                    sA++;
-                }else if(subDNA[j] == 'C'){
-                    sC++;
-                }else if(subDNA[j] == 'G'){
-                    sG++;
-                }else if(subDNA[j] == 'T'){
-                    sT++;
-                }
-            }
+    //전체 문자열을 한바퀴 돌기
+    //그 안에서 P 길이 만큼만 다시 보되, 추가된 염기와 제거된 염기만 고려하기(시간복잡도 줄임)
+    for(int i = 0; i < S-P; i++){
+  
+        if(fullDNA[i] == 'A') partDNA[0]--;
+        else if(fullDNA[i] == 'C') partDNA[1]--;
+        else if(fullDNA[i] == 'G') partDNA[2]--;
+        else if(fullDNA[i] == 'T') partDNA[3]--;
 
-        }else{//두번째부터는 새로 생긴 문자 카운트하고, 없어진 문자 카운트 삭제
-            int subDNALast = i+P-1;
-            if(fullDNA[subDNALast] == 'A'){
-                sA++;
-            }else if(fullDNA[subDNALast] == 'C'){
-                sC++;
-            }else if(fullDNA[subDNALast] == 'G'){
-                sG++;
-            }else if(fullDNA[subDNALast] == 'T'){
-                sT++;
-            }
+        if(fullDNA[i+P] == 'A') partDNA[0]++;
+        else if(fullDNA[i+P] == 'C') partDNA[1]++;
+        else if(fullDNA[i+P] == 'G') partDNA[2]++;
+        else if(fullDNA[i+P] == 'T') partDNA[3]++;
 
-            int subDNALost = i-1;
-            if(fullDNA[subDNALost] == 'A'){
-                sA--;
-            }else if(fullDNA[subDNALost] == 'C'){
-                sC--;
-            }else if(fullDNA[subDNALost] == 'G'){
-                sG--;
-            }else if(fullDNA[subDNALost] == 'T'){
-                sT--;
-            }
-        }
-
-        //카운팅이 끝난 후에 조건과 확인
-        if(A <= sA && C <= sC && G <= sG && T <= sT){
-            count++;
-        }
-        
+        if(partDNA[0] >= A && partDNA[1] >= C && partDNA[2] >= G && partDNA[3] >= T) count++;
     }
 
     //출력
-    cout<<count<<"\n";
+    cout << count << "\n";
 
 }
