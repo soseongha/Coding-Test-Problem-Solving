@@ -1,59 +1,58 @@
 #include <iostream>
 #include <stack>
-#include <queue>
+#include <vector>
 using namespace std;
 
 int main(void){
 
-    //수열의 개수 n
+    //수열의 개수 n 입력 받기
     int n;
     cin >> n;
 
-    //스택 선언
-    stack<int> myStack;
-    queue<char> operation;
-    int input = 1;
+    vector<char> resultArray;
+    stack<int> stack;
+    int inserted;
+    int pushed = 0;
+    bool success = true;
+    
 
-    //n번 루프
-    for(int i = 0; i < n ; i++){
 
-        //현재 숫자 입력 받기
-        int now;
-        cin >> now;
+    //n번 돌리기
+    for(int i = 0; i < n; i++){
+     
+        //수 하나 입력 받기
+        cin >> inserted;
 
-        //top에 now가 있다면 pop
-        if( !myStack.empty() && myStack.top() == now){
-            
-            myStack.pop();
-            operation.push('-');
-            
-        }//top에 now보다 큰 수가 있다면 실패
-        else if(!myStack.empty() && myStack.top() > now){
-        
-            cout << "NO\n";
-            return 0;
+        //만약 입력 받은 수 > 현재까지 push 한 수, 계속 push + pop
+        if(inserted > pushed){
 
-        }//그런게 아니라면 아직 수가 나오지 않은 것이니 now가 나올때까지 push, 나오면 pop
-        else{
-
-            while( myStack.empty() || myStack.top() != now){
-                
-                myStack.push(input);
-                input++;
-                operation.push('+');
-                
+            while(inserted > pushed){
+                stack.push(++pushed);
+                resultArray.push_back('+');
             }
-            myStack.pop();
-            operation.push('-');
+            stack.pop();
+            resultArray.push_back('-'); 
             
-        } 
+        }   
+        //만약 입력 받은 수 = 스택의 탑이라면, pop
+        else if(inserted == stack.top()){
+            stack.pop();
+            resultArray.push_back('-');
+        }
+        //만약 입력 받은 수 != 스택의 답이라면, 오류를 출력 
+        else{
+            cout << "NO\n";
+            success = false;
+            break;
+        }
+        
     }
 
-    //출력
-    while( !operation.empty() ){
-
-        cout << operation.front() <<"\n";
-        operation.pop();
+    //전체 출력하기
+    if(success == true){
+        for(int i = 0; i < resultArray.size(); i++){
+            cout << resultArray[i] << "\n";
+        }
     }
 }
 

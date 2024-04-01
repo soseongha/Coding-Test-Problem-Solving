@@ -1,7 +1,9 @@
 #include <iostream>
-#include <vector>
 #include <stack>
+#include <vector>
 using namespace std;
+
+typedef pair<int, int> Node; //index, value
 
 int main(void){
 
@@ -11,47 +13,48 @@ int main(void){
     cin.tie(NULL);
     cout.tie(NULL);
 
-    //N개의 수
+    //수열의 크기 N 입력 받기
     int N;
-    cin >> N;//밑에서 nums, answ 초기화하려면 N 먼저 입력받아야돼 이게 위에 있어야해
-    vector<int> nums(N, 0);
-    vector<int> answ(N, 0); //얘네 초기화 하는 거 잊지말자, 초기화 안해놓고 여기에 인덱스로 접근하면 runtime error
-    stack<int> myStack;
-   
+    cin >> N;
+    int answer[N] = {0};
+    stack<Node> stack;
 
-    //N개의 수 입력받기
+    //N만큼 반복
     for(int i = 0; i < N; i++){
+     
+        //수 하나씩 입력 받기
+        int A;
+        cin >> A;
 
-        cin >> nums[i];
-    }
-
-    //본격적으로 !
-    for(int i = 0; i < N; i++){
-
-        //현재 새 수가 스택의 top보다 크다면, 오큰수로 출력하고 top을 pop함(top이 안클때까지 반복)
-        while( !myStack.empty() && nums[myStack.top()] < nums[i] ){
-
-            answ[myStack.top()] = nums[i];
-            myStack.pop();
+        //스택의 탑보다 값이 작거나 같으면 쌓고, 크면 스택을 pop하기
+        //이때 pop된 요소의 오큰수는 현재 수이므로, 이를 정답배열에 입력
+        if(stack.empty()){
+            
+            stack.push(Node{i, A});
         }
+        else if(!stack.empty() && A <= stack.top().second){
 
-        //현재의 수를 push
-        myStack.push(i);
-
-    }
-
-    //스택에서 남은 수만큼 -1 찍기
-    while( !myStack.empty()){
+            stack.push(Node{i, A});
         
-        answ[myStack.top()] = -1;
-        myStack.pop();
+        }else{
+
+            while(!stack.empty() && A > stack.top().second){
+        
+                answer[stack.top().first] = A;
+                stack.pop();
+            }
+            stack.push(Node{i, A});
+        }
+    }
+ 
+    //스택에 남은 모든 애들의 오큰수는 -1로 정답배열에 입력
+    while(!stack.empty()){
+        answer[stack.top().first] = -1;
+        stack.pop();
     }
 
-    //전체 answer 배열 출력하기
-     for(int i = 0; i < N; i++){
-    
-        cout << answ[i] << " ";
+    //정답배열 전체 출력
+    for(int i = 0; i < N; i++){
+        cout << answer[i] << " ";
     }
-
-    return 0;
 }
