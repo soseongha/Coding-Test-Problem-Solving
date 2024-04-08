@@ -4,33 +4,30 @@ using namespace std;
 
 
 int main(void){
+	
+	//insert N
+	int N;
+	cin >> N;
 
-    //카드의 개수 N
-    int N;
-    cin >> N;
+	//declare queue
+	deque<int> q;
 
-    //큐에 카드 구현
-    deque<int> cards;
-    for(int i = 1; i <= N; i++){
-        
-        cards.push_back(i);
+	//push all cards
+	for(int i = N; i > 0; i--){
+		q.push_front(i);
+	}
+
+	//for statement
+	//pop top one
+	//pop next top one and push floor
+	while(q.size() > 1){
+		q.pop_front();
+		q.push_back(q.front());
+		q.pop_front();
+
+	}
+		
+	//print output
+	cout << q.front() << "\n";
     }
-
-    //카드 셔플
-    while(cards.size() > 1){
-
-        //맨 앞의 카드를 빼기
-        cards.pop_front();
-        if(cards.size() <= 1){
-            break;
-        }
-
-        //그 앞에 카드를 빼서 뒤로 넣기
-        cards.push_back(cards.front());
-        cards.pop_front();
-    }
-
-    //출력
-    cout << cards.front() << "\n";
-}
 
